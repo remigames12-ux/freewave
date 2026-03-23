@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FreeWave — About Remi Miller</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lime: #D4FF00;
+    --coral: #FF4D6D;
+    --cyan: #00F5FF;
+    --purple: #9B5DE5;
+    --orange: #FF9F1C;
+    --dark: #0A0A0A;
+    --darker: #050505;
+    --white: #F5F5F5;
+    --gray: #1A1A1A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--darker);
+    color: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .cursor {
+    width: 20px; height: 20px;
+    background: var(--lime);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s;
+    mix-blend-mode: difference;
+  }
+  .cursor.big { width: 60px; height: 60px; }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 48px;
+    background: rgba(5,5,5,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 4px;
+    color: var(--lime);
+    text-decoration: none;
+    text-shadow: 0 0 30px rgba(212,255,0,0.4);
+  }
+  .logo span { color: var(--coral); }
+
+  nav ul { display: flex; gap: 40px; list-style: none; }
+  nav a {
+    color: rgba(245,245,245,0.6);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--lime); }
+  nav a.active { color: var(--lime); }
+
+  .nav-cta {
+    background: var(--lime);
+    color: var(--dark) !important;
+    padding: 10px 24px;
+    border-radius: 100px;
+    font-weight: 700 !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+  }
+  .nav-cta:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(212,255,0,0.4);
+    color: var(--dark) !important;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 160px 48px 100px;
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 50% 80% at 100% 30%, rgba(212,255,0,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 0% 80%, rgba(255,77,109,0.08) 0%, transparent 60%);
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: rgba(245,245,245,0.4);
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+  }
+  .breadcrumb a { color: var(--lime); text-decoration: none; }
+  .breadcrumb span { color: rgba(245,245,245,0.2); }
+
+  .hero-left { position: relative; z-index: 1; }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(212,255,0,0.08);
+    border: 1px solid rgba(212,255,0,0.25);
+    color: var(--lime);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border-radius: 100px;
+    margin-bottom: 32px;
+    width: fit-content;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(60px, 8vw, 110px);
+    line-height: 0.95;
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+
+  .hero h1 .name {
+    color: var(--lime);
+    display: block;
+    text-shadow: 0 0 40px rgba(212,255,0,0.3);
+  }
+
+  .hero h1 .role {
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(245,245,245,0.3);
+    display: block;
+    font-size: clamp(40px, 5vw, 72px);
+  }
+
+  .bio-text {
+    font-size: 19px;
+    line-height: 1.8;
+    color: rgba(245,245,245,0.65);
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+
+  .bio-text strong { color: var(--white); }
+  .bio-text .highlight { color: var(--lime); font-weight: 600; }
+  .bio-text .broke { color: var(--coral); font-weight: 600; }
+
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+
+  .hero-stat { text-align: left; }
+
+  .hero-stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .hero-stat-label {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(245,245,245,0.4);
+  }
+
+  /* Profile card */
+  .profile-card {
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s ease 0.4s both;
+  }
+
+  .card-outer {
+    background: var(--gray);
+    border-radius: 28px;
+    padding: 40px;
+    border: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-outer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--lime), var(--cyan), var(--coral));
+  }
+
+  .profile-avatar {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--lime), var(--cyan));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 56px;
+    margin-bottom: 24px;
+    border: 3px solid rgba(212,255,0,0.3);
+    box-shadow: 0 0 40px rgba(212,255,0,0.15);
+  }
+
+  .profile-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+
+  .profile-title {
+    color: var(--lime);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .profile-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+
+  .profile-tag {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    color: rgba(245,245,245,0.6);
+  }
+
+  .profile-tag.special {
+    background: rgba(212,255,0,0.08);
+    border-color: rgba(212,255,0,0.2);
+    color: var(--lime);
+  }
+
+  .profile-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+    margin-bottom: 24px;
+  }
+
+  .profile-fact {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+    font-size: 15px;
+    color: rgba(245,245,245,0.65);
+  }
+
+  .profile-fact-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  /* Quote section */
+  .quote-section {
+    padding: 100px 48px;
+    background: var(--gray);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quote-section::before {
+    content: '"';
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 400px;
+    color: rgba(212,255,0,0.03);
+    position: absolute;
+    top: -80px;
+    left: 20px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .quote-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+  }
+
+  .quote-text {
+    font-size: clamp(24px, 3vw, 36px);
+    line-height: 1.5;
+    font-weight: 500;
+    margin-bottom: 32px;
+    color: var(--white);
+  }
+
+  .quote-text .q-lime { color: var(--lime); }
+  .quote-text .q-coral { color: var(--coral); }
+
+  .quote-attr {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: rgba(245,245,245,0.4);
+    letter-spacing: 2px;
+  }
+
+  /* Story section */
+  .story {
+    padding: 120px 48px;
+  }
+
+  .section-tag {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--lime);
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 80px);
+    line-height: 1;
+    margin-bottom: 60px;
+  }
+
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .story-text p {
+    font-size: 17px;
+    line-height: 1.9;
+    color: rgba(245,245,245,0.6);
+    margin-bottom: 24px;
+  }
+
+  .story-text p strong { color: var(--white); }
+  .story-text p .lime { color: var(--lime); }
+  .story-text p .coral { color: var(--coral); }
+
+  .story-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 24px;
+    position: relative;
+  }
+
+  .timeline-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .timeline-dot {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .timeline-line {
+    width: 2px;
+    flex: 1;
+    min-height: 40px;
+    background: rgba(255,255,255,0.06);
+    margin: 8px 0;
+  }
+
+  .timeline-item:last-child .timeline-line { display: none; }
+
+  .timeline-content {
+    padding-bottom: 40px;
+  }
+
+  .timeline-age {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: rgba(245,245,245,0.35);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .timeline-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .timeline-desc {
+    font-size: 14px;
+    color: rgba(245,245,245,0.5);
+    line-height: 1.6;
+  }
+
+  /* Mission */
+  .mission {
+    padding: 120px 48px;
+    background: var(--gray);
+  }
+
+  .mission-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 60px;
+  }
+
+  .mission-card {
+    background: var(--darker);
+    border-radius: 20px;
+    padding: 40px 36px;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.2s, border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mission-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.12); }
+
+  .mission-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .mission-card:nth-child(1)::after { background: var(--lime); }
+  .mission-card:nth-child(2)::after { background: var(--coral); }
+  .mission-card:nth-child(3)::after { background: var(--cyan); }
+  .mission-card:hover::after { opacity: 1; }
+
+  .mission-icon { font-size: 44px; margin-bottom: 20px; display: block; }
+  .mission-title { font-size: 22px; font-weight: 700; margin-bottom: 14px; }
+  .mission-desc { color: rgba(245,245,245,0.5); line-height: 1.7; font-size: 15px; }
+
+  /* CTA */
+  .cta {
+    padding: 120px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(212,255,0,0.05), transparent 70%);
+  }
+
+  .cta h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(60px, 10vw, 120px);
+    line-height: 0.95;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .cta h2 span { color: var(--lime); }
+
+  .cta p {
+    color: rgba(245,245,245,0.5);
+    font-size: 20px;
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .cta-btns { display: flex; gap: 16px; justify-content: center; position: relative; }
+
+  .btn-primary {
+    background: var(--lime);
+    color: var(--dark);
+    border: none;
+    padding: 20px 48px;
+    border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 60px rgba(212,255,0,0.3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 20px 48px;
+    border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: none;
+    transition: border-color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.4); }
+
+  footer {
+    padding: 60px 48px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--lime);
+    text-decoration: none;
+  }
+
+  .footer-copy { color: rgba(245,245,245,0.3); font-size: 13px; }
+
+  .footer-links { display: flex; gap: 32px; }
+  .footer-links a {
+    color: rgba(245,245,245,0.4);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--lime); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Marquee */
+  .marquee-wrap {
+    overflow: hidden;
+    background: var(--lime);
+    padding: 14px 0;
+  }
+  .marquee {
+    display: flex;
+    animation: marquee 30s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    color: var(--dark);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 0 40px;
+    flex-shrink: 0;
+  }
+  .marquee-dot { color: rgba(0,0,0,0.3); padding: 0 8px; }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<nav>
+  <a href="index.html" class="logo">Free<span>Wave</span></a>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="freewave-artists.html">For Artists</a></li>
+    <li><a href="freewave-pricing.html">Pricing</a></li>
+    <li><a href="freewave-about.html" class="active">About</a></li>
+  </ul>
+  <a href="freewave-pricing.html" class="nav-cta">Start Listening Free</a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <div class="hero-left">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span>/</span>
+      About
+    </div>
+    <div class="hero-tag">👋 The Person Behind FreeWave</div>
+    <h1>
+      <span class="name">REMI MILLER</span>
+      <span class="role">13 · BROKE · BUILDING ANYWAY</span>
+    </h1>
+    <p class="bio-text">
+      I'm <strong>Remi Miller</strong> — a <span class="highlight">13-year-old</span> who was tired of being <span class="broke">broke</span> AND having ads ruin my music. So I built FreeWave. No subscription, no ads, no nonsense. Just <strong>free music for everyone</strong> who's ever skipped buying lunch to afford a streaming plan.
+      <br><br>
+      I'm 13, I'm just getting started, and I'm proving you <strong>don't need money or a fancy degree</strong> to build something real.
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num" style="color:var(--lime)">13</div>
+        <div class="hero-stat-label">Years Old</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" style="color:var(--coral)">$0</div>
+        <div class="hero-stat-label">Starting Budget</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" style="color:var(--cyan)">∞</div>
+        <div class="hero-stat-label">Ambition</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile card -->
+  <div class="profile-card">
+    <div class="card-outer">
+      <div class="profile-avatar">🎵</div>
+      <div class="profile-name">Remi Miller</div>
+      <div class="profile-title">Founder & CEO · FreeWave</div>
+      <div class="profile-tags">
+        <span class="profile-tag special">Age 13</span>
+        <span class="profile-tag special">Self-Taught</span>
+        <span class="profile-tag">Music Lover</span>
+        <span class="profile-tag">Entrepreneur</span>
+        <span class="profile-tag">Pensacola, FL</span>
+      </div>
+      <div class="profile-divider"></div>
+      <div class="profile-fact">
+        <span class="profile-fact-icon">🎯</span>
+        Building a free music platform for people who can't afford subscriptions
+      </div>
+      <div class="profile-fact">
+        <span class="profile-fact-icon">💡</span>
+        Obsessed with real estate, investing, and making money work smarter
+      </div>
+      <div class="profile-fact">
+        <span class="profile-fact-icon">🚀</span>
+        Goal: financially free before 32. Watch.
+      </div>
+      <div class="profile-fact">
+        <span class="profile-fact-icon">🌊</span>
+        FreeWave is just the beginning.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span class="marquee-item">Age 13 <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Self Taught <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Zero Budget <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Big Vision <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Music For All <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Just Getting Started <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Age 13 <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Self Taught <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Zero Budget <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Big Vision <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Music For All <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Just Getting Started <span class="marquee-dot">✦</span></span>
+  </div>
+</div>
+
+<!-- Quote -->
+<section class="quote-section">
+  <div class="quote-inner">
+    <p class="quote-text">
+      "I was <span class="q-coral">broke</span>, bored, and annoyed that every song I wanted to hear was locked behind a paywall. So instead of complaining about it, I built <span class="q-lime">something better.</span> That's what FreeWave is — my answer to a problem every broke music lover has."
+    </p>
+    <div class="quote-attr">— REMI MILLER · FOUNDER · AGE 13</div>
+  </div>
+</section>
+
+<!-- Story -->
+<section class="story">
+  <div class="section-tag">The Origin Story</div>
+  <h2 class="section-title">HOW IT<br>STARTED</h2>
+
+  <div class="story-grid">
+    <div class="story-text">
+      <p>
+        It started with a simple frustration. <strong>I was broke</strong> — like actually broke — and I wanted to listen to music without ads interrupting every three songs. The free tier on Spotify was driving me insane. Apple Music wanted $11 a month. I didn't have $11 a month.
+      </p>
+      <p>
+        So I started thinking: <strong>why does music cost money to listen to at all?</strong> Artists upload their songs hoping people hear them. Listeners want to hear songs. Why is there a corporation sitting in the middle charging both sides?
+      </p>
+      <p>
+        I couldn't stop thinking about it. And then I realized — <span class="lime">I could just build the thing I wanted to exist.</span> I'm 13, I don't have money, I don't have a team, I don't have a degree. But I have time, I have an idea, and I have access to tools that make building easier than ever before.
+      </p>
+      <p>
+        <span class="coral">FreeWave isn't just a music platform.</span> It's proof that you don't need to wait until you're older, richer, or more qualified to start building something real. If you see a problem — fix it. That's the whole story.
+      </p>
+    </div>
+
+    <div class="story-timeline">
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-dot" style="background:var(--lime)"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-age">AGE 13 · THE PROBLEM</div>
+          <div class="timeline-title">Got tired of ads & paywalls</div>
+          <p class="timeline-desc">Couldn't afford a music subscription. Got hit with ads every 3 songs. Decided something had to change.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-dot" style="background:var(--coral)"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-age">AGE 13 · THE IDEA</div>
+          <div class="timeline-title">What if music was just... free?</div>
+          <p class="timeline-desc">Started thinking about a platform where listeners pay nothing and artists earn from promotion — not from charging fans.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-dot" style="background:var(--cyan)"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-age">AGE 13 · THE BUILD</div>
+          <div class="timeline-title">Started building FreeWave</div>
+          <p class="timeline-desc">Used AI tools to design and build the platform from scratch with zero budget. Proved age doesn't limit ambition.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-dot" style="background:var(--purple)"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-age">THE FUTURE</div>
+          <div class="timeline-title">This is just the beginning</div>
+          <p class="timeline-desc">Real artists. Real listeners. Real free music. FreeWave is growing and Remi's just getting started.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mission -->
+<section class="mission">
+  <div class="section-tag">What We Stand For</div>
+  <h2 class="section-title">THE MISSION</h2>
+
+  <div class="mission-grid">
+    <div class="mission-card">
+      <span class="mission-icon">🎵</span>
+      <div class="mission-title">Music Is For Everyone</div>
+      <p class="mission-desc">Your bank account shouldn't decide what you get to listen to. Music is a human experience — not a luxury product. FreeWave keeps it that way.</p>
+    </div>
+    <div class="mission-card">
+      <span class="mission-icon">🎤</span>
+      <div class="mission-title">Artists Deserve Better</div>
+      <p class="mission-desc">Independent artists pour their soul into their music and get $0.003 per stream in return. FreeWave flips the model so artists actually earn.</p>
+    </div>
+    <div class="mission-card">
+      <span class="mission-icon">⚡</span>
+      <div class="mission-title">Age Is Just A Number</div>
+      <p class="mission-desc">A 13-year-old built this. If you have an idea and a problem to solve, you're qualified to start. Don't wait. Build now.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>JOIN THE<br><span>WAVE.</span></h2>
+  <p>Free music. Real artists. Built by a broke 13-year-old who believed it was possible.</p>
+  <div class="cta-btns">
+    <a href="freewave-pricing.html" class="btn-primary">Start Listening Free →</a>
+    <a href="freewave-artists.html" class="btn-ghost">For Artists</a>
+  </div>
+</section>
+
+<footer>
+  <a href="index.html" class="footer-logo">FreeWave</a>
+  <div class="footer-copy">© 2025 FreeWave · Founded by Remi Miller, age 13.</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="freewave-artists.html">For Artists</a>
+    <a href="freewave-pricing.html">Pricing</a>
+    <a href="freewave-about.html">About</a>
+  </div>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('button, a, .mission-card').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.mission-card, .timeline-item').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = `opacity 0.6s ease ${i * 0.1}s, transform 0.6s ease ${i * 0.1}s`;
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
