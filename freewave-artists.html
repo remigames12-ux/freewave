@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FreeWave — For Artists</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lime: #D4FF00;
+    --coral: #FF4D6D;
+    --cyan: #00F5FF;
+    --purple: #9B5DE5;
+    --orange: #FF9F1C;
+    --dark: #0A0A0A;
+    --darker: #050505;
+    --white: #F5F5F5;
+    --gray: #1A1A1A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--darker);
+    color: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .cursor {
+    width: 20px; height: 20px;
+    background: var(--coral);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: difference;
+  }
+  .cursor.big { width: 60px; height: 60px; }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 48px;
+    background: rgba(5,5,5,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 4px;
+    color: var(--lime);
+    text-decoration: none;
+    text-shadow: 0 0 30px rgba(212,255,0,0.4);
+  }
+  .logo span { color: var(--coral); }
+
+  nav ul { display: flex; gap: 40px; list-style: none; }
+  nav a {
+    color: rgba(245,245,245,0.6);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav a:hover, nav a.active { color: var(--coral); }
+
+  .nav-cta {
+    background: var(--lime);
+    color: var(--dark) !important;
+    padding: 10px 24px;
+    border-radius: 100px;
+    font-weight: 700 !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+  }
+  .nav-cta:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(212,255,0,0.4);
+    color: var(--dark) !important;
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 140px 48px 80px;
+    gap: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 50% 70% at 100% 50%, rgba(255,77,109,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 0% 80%, rgba(155,93,229,0.12) 0%, transparent 60%);
+  }
+
+  .hero-left { position: relative; z-index: 1; }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: rgba(245,245,245,0.4);
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+  }
+  .breadcrumb a { color: var(--coral); text-decoration: none; }
+  .breadcrumb span { color: rgba(245,245,245,0.2); }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,77,109,0.1);
+    border: 1px solid rgba(255,77,109,0.3);
+    color: var(--coral);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border-radius: 100px;
+    margin-bottom: 32px;
+    width: fit-content;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(60px, 8vw, 110px);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--coral);
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: rgba(245,245,245,0.55);
+    line-height: 1.7;
+    margin-bottom: 48px;
+    max-width: 480px;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+
+  .hero-sub strong { color: var(--white); }
+
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+
+  .btn-primary {
+    background: var(--coral);
+    color: var(--white);
+    border: none;
+    padding: 18px 40px;
+    border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(255,77,109,0.4);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 18px 40px;
+    border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-ghost:hover {
+    border-color: var(--coral);
+    background: rgba(255,77,109,0.05);
+  }
+
+  /* Dashboard mockup */
+  .dashboard {
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s ease 0.4s both;
+  }
+
+  .dash-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+  }
+
+  .dash-header {
+    background: rgba(255,255,255,0.03);
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .dash-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  .dash-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: rgba(245,245,245,0.4);
+    margin-left: auto;
+    letter-spacing: 1px;
+  }
+
+  .dash-body { padding: 24px; }
+
+  .dash-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .dash-stat {
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .dash-stat-label {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(245,245,245,0.4);
+    margin-bottom: 8px;
+  }
+
+  .dash-stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  .dash-stat-change {
+    font-size: 11px;
+    color: var(--lime);
+    margin-top: 4px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* Mini chart */
+  .mini-chart {
+    background: rgba(255,255,255,0.02);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .chart-label {
+    font-size: 12px;
+    color: rgba(245,245,245,0.4);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+
+  .chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 60px;
+  }
+
+  .chart-bar {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    background: rgba(255,77,109,0.3);
+    transition: background 0.2s;
+    animation: growUp 1s ease both;
+  }
+
+  .chart-bar.active { background: var(--coral); }
+  .chart-bar:hover { background: var(--coral); }
+
+  @keyframes growUp {
+    from { transform: scaleY(0); transform-origin: bottom; }
+    to { transform: scaleY(1); transform-origin: bottom; }
+  }
+
+  /* Track list */
+  .track-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .track-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.02);
+    transition: background 0.2s;
+  }
+
+  .track-row:hover { background: rgba(255,255,255,0.05); }
+
+  .track-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(245,245,245,0.3);
+    width: 16px;
+    text-align: center;
+  }
+
+  .track-thumb {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .track-info { flex: 1; }
+  .track-name { font-size: 13px; font-weight: 600; }
+  .track-plays { font-size: 11px; color: rgba(245,245,245,0.4); font-family: 'DM Mono', monospace; }
+
+  .track-earn {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--lime);
+  }
+
+  /* Marquee */
+  .marquee-wrap {
+    overflow: hidden;
+    background: var(--coral);
+    padding: 14px 0;
+  }
+  .marquee {
+    display: flex;
+    animation: marquee 25s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    color: var(--white);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 0 40px;
+    flex-shrink: 0;
+  }
+  .marquee-dot { color: rgba(255,255,255,0.4); padding: 0 8px; }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* Why section */
+  .why {
+    padding: 120px 48px;
+    background: var(--gray);
+  }
+
+  .section-tag {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 80px);
+    line-height: 1;
+    margin-bottom: 80px;
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+  }
+
+  .why-card {
+    background: var(--darker);
+    padding: 52px 48px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .why-card:hover { background: #0f0f0f; }
+
+  .why-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--coral);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+    transform-origin: left;
+  }
+
+  .why-card:hover::after { transform: scaleX(1); }
+
+  .why-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    position: absolute;
+    top: 16px;
+    right: 32px;
+  }
+
+  .why-icon { font-size: 44px; margin-bottom: 24px; display: block; }
+  .why-title { font-size: 24px; font-weight: 700; margin-bottom: 16px; }
+  .why-desc { color: rgba(245,245,245,0.5); line-height: 1.7; font-size: 16px; }
+
+  /* Compare */
+  .compare {
+    padding: 120px 48px;
+  }
+
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 60px;
+  }
+
+  .compare-table th {
+    padding: 24px 32px;
+    text-align: left;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(245,245,245,0.4);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .compare-table th.highlight {
+    background: rgba(255,77,109,0.08);
+    color: var(--coral);
+    border-radius: 12px 12px 0 0;
+  }
+
+  .compare-table td {
+    padding: 20px 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 15px;
+  }
+
+  .compare-table td.highlight {
+    background: rgba(255,77,109,0.05);
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .compare-table tr:hover td.highlight { background: rgba(255,77,109,0.08); }
+
+  .check { color: var(--lime); font-size: 18px; }
+  .cross { color: rgba(245,245,245,0.2); font-size: 18px; }
+  .meh { color: var(--orange); }
+
+  /* Earnings calc */
+  .earnings {
+    padding: 120px 48px;
+    background: var(--gray);
+  }
+
+  .calc-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    margin-top: 60px;
+  }
+
+  .calc-card {
+    background: var(--darker);
+    border-radius: 24px;
+    padding: 48px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .calc-row {
+    margin-bottom: 32px;
+  }
+
+  .calc-label {
+    font-size: 14px;
+    color: rgba(245,245,245,0.5);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+
+  .calc-input {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 16px 20px;
+    color: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.2s;
+    cursor: none;
+  }
+
+  .calc-input:focus { border-color: var(--coral); }
+
+  .slider {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.1);
+    outline: none;
+    cursor: none;
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--coral);
+    cursor: none;
+    box-shadow: 0 0 12px rgba(255,77,109,0.5);
+  }
+
+  .slider-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--coral);
+    margin-top: 8px;
+  }
+
+  .calc-result {
+    background: linear-gradient(135deg, rgba(255,77,109,0.15), rgba(155,93,229,0.1));
+    border: 1px solid rgba(255,77,109,0.2);
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .result-label { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,245,245,0.4); margin-bottom: 12px; }
+  .result-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px;
+    color: var(--lime);
+    line-height: 1;
+    text-shadow: 0 0 40px rgba(212,255,0,0.3);
+  }
+  .result-sub { color: rgba(245,245,245,0.4); font-size: 14px; margin-top: 8px; }
+
+  .earnings-text h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+
+  .earnings-text p {
+    color: rgba(245,245,245,0.55);
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+
+  .earnings-points { display: flex; flex-direction: column; gap: 16px; }
+
+  .earnings-point {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .ep-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    background: rgba(255,77,109,0.1);
+  }
+
+  .ep-text { font-size: 15px; color: rgba(245,245,245,0.7); line-height: 1.5; }
+  .ep-text strong { color: var(--white); }
+
+  /* Testimonials */
+  .testimonials {
+    padding: 120px 48px;
+  }
+
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 60px;
+  }
+
+  .testi-card {
+    background: var(--gray);
+    border-radius: 20px;
+    padding: 36px;
+    position: relative;
+    transition: transform 0.2s;
+  }
+
+  .testi-card:hover { transform: translateY(-4px); }
+
+  .testi-quote {
+    font-size: 48px;
+    line-height: 1;
+    color: var(--coral);
+    margin-bottom: 16px;
+    font-family: 'Bebas Neue', sans-serif;
+  }
+
+  .testi-text {
+    color: rgba(245,245,245,0.7);
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  .testi-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .testi-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .testi-name { font-weight: 700; font-size: 15px; }
+  .testi-role { font-size: 12px; color: rgba(245,245,245,0.4); }
+
+  /* CTA */
+  .cta-section {
+    padding: 120px 48px;
+    background: var(--gray);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(255,77,109,0.1), transparent 70%);
+  }
+
+  .cta-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(60px, 10vw, 120px);
+    line-height: 0.95;
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .cta-section h2 span { color: var(--coral); }
+
+  .cta-section p {
+    color: rgba(245,245,245,0.5);
+    font-size: 20px;
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .cta-btns {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Footer */
+  footer {
+    padding: 60px 48px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--lime);
+    text-decoration: none;
+  }
+
+  .footer-copy { color: rgba(245,245,245,0.3); font-size: 13px; }
+
+  .footer-links { display: flex; gap: 32px; }
+  .footer-links a {
+    color: rgba(245,245,245,0.4);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--coral); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<nav>
+  <a href="freewave.html" class="logo">Free<span>Wave</span></a>
+  <ul>
+    <li><a href="freewave.html">Home</a></li>
+    <li><a href="freewave-artists.html" class="active">For Artists</a></li>
+    <li><a href="freewave-pricing.html">Pricing</a></li>
+  </ul>
+  <a href="#" class="nav-cta">Upload Music</a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <div class="hero-left">
+    <div class="breadcrumb">
+      <a href="freewave.html">Home</a>
+      <span>/</span>
+      For Artists
+    </div>
+    <div class="hero-tag">🎤 Artist Platform</div>
+    <h1>YOUR MUSIC.<br><em>YOUR MONEY.</em><br>YOUR RULES.</h1>
+    <p class="hero-sub">
+      Stop giving 97% of your revenue to streaming giants. FreeWave puts <strong>you in control</strong> — upload free, keep ownership, earn directly from your fanbase.
+    </p>
+    <div class="hero-buttons">
+      <button class="btn-primary">Upload Your Music Free →</button>
+      <button class="btn-ghost">See How It Works</button>
+    </div>
+  </div>
+
+  <!-- Dashboard mockup -->
+  <div class="dashboard">
+    <div class="dash-card">
+      <div class="dash-header">
+        <div class="dash-dot" style="background:#FF4D6D"></div>
+        <div class="dash-dot" style="background:#FF9F1C"></div>
+        <div class="dash-dot" style="background:#D4FF00"></div>
+        <div class="dash-title">artist dashboard · freewave</div>
+      </div>
+      <div class="dash-body">
+        <div class="dash-stats">
+          <div class="dash-stat">
+            <div class="dash-stat-label">Monthly Streams</div>
+            <div class="dash-stat-num" style="color:var(--coral)">142K</div>
+            <div class="dash-stat-change">↑ +38% this month</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-label">New Followers</div>
+            <div class="dash-stat-num" style="color:var(--cyan)">3.2K</div>
+            <div class="dash-stat-change">↑ +12% this month</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-label">Earned</div>
+            <div class="dash-stat-num" style="color:var(--lime)">$840</div>
+            <div class="dash-stat-change">↑ +$210 vs last month</div>
+          </div>
+        </div>
+
+        <div class="mini-chart">
+          <div class="chart-label">STREAMS THIS WEEK</div>
+          <div class="chart-bars">
+            <div class="chart-bar" style="height:30%"></div>
+            <div class="chart-bar" style="height:55%"></div>
+            <div class="chart-bar" style="height:40%"></div>
+            <div class="chart-bar" style="height:70%"></div>
+            <div class="chart-bar" style="height:50%"></div>
+            <div class="chart-bar active" style="height:90%"></div>
+            <div class="chart-bar" style="height:65%"></div>
+          </div>
+        </div>
+
+        <div class="track-list">
+          <div class="track-row">
+            <div class="track-num">1</div>
+            <div class="track-thumb" style="background:linear-gradient(135deg,var(--coral),var(--purple))">🎵</div>
+            <div class="track-info">
+              <div class="track-name">Neon Dreams</div>
+              <div class="track-plays">58,200 plays</div>
+            </div>
+            <div class="track-earn">+$340</div>
+          </div>
+          <div class="track-row">
+            <div class="track-num">2</div>
+            <div class="track-thumb" style="background:linear-gradient(135deg,var(--cyan),var(--lime))">🎵</div>
+            <div class="track-info">
+              <div class="track-name">Midnight Run</div>
+              <div class="track-plays">41,800 plays</div>
+            </div>
+            <div class="track-earn">+$280</div>
+          </div>
+          <div class="track-row">
+            <div class="track-num">3</div>
+            <div class="track-thumb" style="background:linear-gradient(135deg,var(--purple),var(--orange))">🎵</div>
+            <div class="track-info">
+              <div class="track-name">Solar Flare</div>
+              <div class="track-plays">29,100 plays</div>
+            </div>
+            <div class="track-earn">+$220</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span class="marquee-item">Keep Your Rights <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Upload Free <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Earn Directly <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Real Analytics <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Fan Connection <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">No Label Needed <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Keep Your Rights <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Upload Free <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Earn Directly <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Real Analytics <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Fan Connection <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">No Label Needed <span class="marquee-dot">✦</span></span>
+  </div>
+</div>
+
+<!-- Why FreeWave -->
+<section class="why">
+  <div class="section-tag">Why Artists Choose Us</div>
+  <h2 class="section-title">THE PLATFORM<br>BUILT FOR YOU</h2>
+
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-num">01</div>
+      <span class="why-icon">🔑</span>
+      <div class="why-title">You Own Everything</div>
+      <p class="why-desc">Upload your music and keep 100% of your rights. FreeWave never takes ownership of your work — it's yours forever, no matter what.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">02</div>
+      <span class="why-icon">💰</span>
+      <div class="why-title">Real Revenue Streams</div>
+      <p class="why-desc">Earn through promotion features, fan tipping, and playlist placements. No more waiting for $0.003 per stream to add up.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">03</div>
+      <span class="why-icon">📊</span>
+      <div class="why-title">Actual Analytics</div>
+      <p class="why-desc">See exactly who's listening, where they're from, what time they stream, and which songs convert casual listeners to dedicated fans.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">04</div>
+      <span class="why-icon">🤝</span>
+      <div class="why-title">Direct Fan Connection</div>
+      <p class="why-desc">Message your fans directly. No algorithm gatekeeping your reach. Your followers actually see your new releases.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Compare -->
+<section class="compare">
+  <div class="section-tag">The Honest Truth</div>
+  <h2 class="section-title">US VS THEM</h2>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th style="width:35%">Feature</th>
+        <th class="highlight" style="width:22%">🌊 FreeWave</th>
+        <th style="width:22%">Spotify</th>
+        <th style="width:21%">Apple Music</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Upload cost</td>
+        <td class="highlight"><span class="check">✓</span> Always free</td>
+        <td><span class="meh">~$10/yr via distro</span></td>
+        <td><span class="meh">~$20/yr via distro</span></td>
+      </tr>
+      <tr>
+        <td>Keep music rights</td>
+        <td class="highlight"><span class="check">✓</span> 100% yours</td>
+        <td><span class="check">✓</span> Yes</td>
+        <td><span class="check">✓</span> Yes</td>
+      </tr>
+      <tr>
+        <td>Per-stream rate</td>
+        <td class="highlight"><span class="check">✓</span> Revenue sharing</td>
+        <td><span class="cross">✗</span> $0.003–0.005</td>
+        <td><span class="cross">✗</span> $0.007–0.01</td>
+      </tr>
+      <tr>
+        <td>Direct fan messaging</td>
+        <td class="highlight"><span class="check">✓</span> Yes</td>
+        <td><span class="cross">✗</span> No</td>
+        <td><span class="cross">✗</span> No</td>
+      </tr>
+      <tr>
+        <td>Fan tipping</td>
+        <td class="highlight"><span class="check">✓</span> Built in</td>
+        <td><span class="cross">✗</span> No</td>
+        <td><span class="cross">✗</span> No</td>
+      </tr>
+      <tr>
+        <td>Real-time analytics</td>
+        <td class="highlight"><span class="check">✓</span> Full dashboard</td>
+        <td><span class="meh">Basic only</span></td>
+        <td><span class="meh">Basic only</span></td>
+      </tr>
+      <tr>
+        <td>Promotion tools</td>
+        <td class="highlight"><span class="check">✓</span> Built in</td>
+        <td><span class="meh">Paid add-on</span></td>
+        <td><span class="cross">✗</span> No</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Earnings calc -->
+<section class="earnings">
+  <div class="section-tag">See Your Potential</div>
+  <h2 class="section-title">CALCULATE<br>YOUR EARNINGS</h2>
+
+  <div class="calc-wrap">
+    <div class="calc-card">
+      <div class="calc-row">
+        <div class="calc-label">MONTHLY STREAMS</div>
+        <input type="range" class="slider" id="streams" min="1000" max="500000" value="50000" step="1000">
+        <div class="slider-val" id="streams-val">50,000 streams</div>
+      </div>
+      <div class="calc-row">
+        <div class="calc-label">PROMOTION TIER</div>
+        <select class="calc-input" id="tier" style="cursor:none">
+          <option value="0">Free (no promotion)</option>
+          <option value="50" selected>Basic — $50/mo</option>
+          <option value="150">Pro — $150/mo</option>
+          <option value="400">Label — $400/mo</option>
+        </select>
+      </div>
+      <div class="calc-result">
+        <div class="result-label">Est. Monthly Earnings</div>
+        <div class="result-num" id="result">$340</div>
+        <div class="result-sub">vs. $150 on Spotify for same streams</div>
+      </div>
+    </div>
+
+    <div class="earnings-text">
+      <h3>MAKE MORE.<br>KEEP MORE.</h3>
+      <p>FreeWave's model means your earnings scale with your fanbase — not with a corporation's royalty formula. The more your fans engage, the more you earn.</p>
+      <div class="earnings-points">
+        <div class="earnings-point">
+          <div class="ep-icon">💸</div>
+          <div class="ep-text"><strong>Stream revenue sharing</strong> — earn from listener activity on your tracks every month</div>
+        </div>
+        <div class="earnings-point">
+          <div class="ep-icon">🚀</div>
+          <div class="ep-text"><strong>Promotion boosts</strong> — pay to get featured on discovery pages and reach new listeners</div>
+        </div>
+        <div class="earnings-point">
+          <div class="ep-icon">❤️</div>
+          <div class="ep-text"><strong>Fan tips</strong> — listeners can tip directly from your artist page, 90% goes to you</div>
+        </div>
+        <div class="earnings-point">
+          <div class="ep-icon">📦</div>
+          <div class="ep-text"><strong>Merch integration</strong> — sell merch directly from your artist profile</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials">
+  <div class="section-tag">Artist Stories</div>
+  <h2 class="section-title">THEY MADE<br>THE SWITCH</h2>
+
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p class="testi-text">I made more in my first month on FreeWave than I did in an entire year on Spotify. The fan connection tools alone are worth it.</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,var(--coral),var(--purple))">🎸</div>
+        <div>
+          <div class="testi-name">Marcus T.</div>
+          <div class="testi-role">Indie Rock · 142K monthly streams</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p class="testi-text">Finally a platform that actually cares about independent artists. The analytics helped me understand my audience in a way Spotify never did.</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,var(--cyan),var(--lime))">🎹</div>
+        <div>
+          <div class="testi-name">Priya K.</div>
+          <div class="testi-role">Electronic · 89K monthly streams</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p class="testi-text">My fans can actually find my new music now. No algorithm burying my releases. Dropped a track last week, 10K plays in 48 hours.</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,var(--purple),var(--orange))">🎤</div>
+        <div>
+          <div class="testi-name">Dani S.</div>
+          <div class="testi-role">R&B · 210K monthly streams</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>READY TO<br><span>GET PAID?</span></h2>
+  <p>Join 2,000+ independent artists already building their careers on FreeWave.</p>
+  <div class="cta-btns">
+    <button class="btn-primary" style="font-size:18px; padding:20px 48px">Upload Your First Track Free →</button>
+    <button class="btn-ghost" style="font-size:18px; padding:20px 48px">Talk to the Team</button>
+  </div>
+</section>
+
+<footer>
+  <a href="freewave.html" class="footer-logo">FreeWave</a>
+  <div class="footer-copy">© 2025 FreeWave. Built for artists, by music lovers.</div>
+  <div class="footer-links">
+    <a href="freewave.html">Home</a>
+    <a href="freewave-artists.html">For Artists</a>
+    <a href="freewave-pricing.html">Pricing</a>
+  </div>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('button, a, input, select, .why-card, .testi-card').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+  });
+
+  // Calc
+  const streamsSlider = document.getElementById('streams');
+  const streamsVal = document.getElementById('streams-val');
+  const tierSelect = document.getElementById('tier');
+  const result = document.getElementById('result');
+
+  function calcEarnings() {
+    const streams = parseInt(streamsSlider.value);
+    const tier = parseInt(tierSelect.value);
+    const base = streams * 0.006;
+    const bonus = tier * 1.4;
+    const total = Math.round(base + bonus);
+    streamsVal.textContent = streams.toLocaleString() + ' streams';
+    result.textContent = '$' + total.toLocaleString();
+  }
+
+  streamsSlider.addEventListener('input', calcEarnings);
+  tierSelect.addEventListener('change', calcEarnings);
+  calcEarnings();
+
+  // Scroll animations
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.why-card, .testi-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
